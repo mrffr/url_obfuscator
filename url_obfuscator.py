@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import sys
 import argparse
 from random import randint, seed
 from urllib.parse import urlparse, urlunparse
@@ -89,7 +88,7 @@ def main():
     parser.add_argument('--no_auth', help='no dummy auth added to hostname', action='store_false')
     args = parser.parse_args()
     print(obfuscate_url(args.url, args.no_host, args.no_auth))
-    return 0
+    return
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
