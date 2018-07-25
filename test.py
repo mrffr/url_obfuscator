@@ -7,15 +7,24 @@ class TestUrlObfus(unittest.TestCase):
     def test_ip(self):
         self.assertEqual(url_obfuscator.ip_lookup("www.github.oneonsot"), "IP error")
 
+    def test_split_ip(self):
+        self.assertEqual(url_obfuscator.split_ip("127.0.0.1"), [127,0,0,1])
+
     def test_ip_octal(self):
-        ip = "127.0.0.1".split('.')
-        ip = '.'.join([url_obfuscator.to_oct(int(i)) for i in ip])
-        self.assertEqual(ip, "0177.00.00.01")
+        seed(1)
+        ip = url_obfuscator.split_ip("127.0.0.1")
+        ip = '.'.join([url_obfuscator.to_oct(i) for i in ip])
+        self.assertEqual(ip, "00177.000000.00.0001")
 
     def test_ip_hex(self):
-        ip = "127.0.0.1".split('.')
-        ip = '.'.join([url_obfuscator.to_hex(int(i)) for i in ip])
+        ip = url_obfuscator.split_ip("127.0.0.1")
+        ip = '.'.join([url_obfuscator.to_hex(i) for i in ip])
         self.assertEqual(ip, "0x7f.0x00.0x00.0x01")
+
+    def test_ip_dword(self):
+        ip = url_obfuscator.split_ip("127.0.0.1")
+        self.assertEqual(url_obfuscator.ip_dword(ip), 2130706433)
+        self.assertEqual(url_obfuscator.ip_dword(ip[1:]), 1)
 
     def test_dummy_auth(self):
         seed(1)

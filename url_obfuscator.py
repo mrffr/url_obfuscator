@@ -12,9 +12,21 @@ def ip_lookup(url):
     return res
 
 def to_oct(n):
-    # TODO arbitrary leading 0
-    return '0{:o}'.format(n)
+    leading_zero = '0' * randint(1,6)
+    return '{}{:o}'.format(leading_zero, n)
+
 def to_hex(n): return '0x{:02x}'.format(n)
+
+def split_ip(ip): return [int(i) for i in ip.split('.')]
+
+def ip_dword(ip):
+    "convert rightmost portion of ip to decimal, given full ip 32 bit max"
+    r = 0
+    v = 1
+    for i in reversed(ip):
+        r += i * v
+        v <<= 8 
+    return r
 
 def dummy_auth():
     "add random text before @ as dummy auth"
@@ -44,3 +56,6 @@ if __name__ == "__main__":
     o[1] = dummy_auth() + o[1]
     o[2] = hext_obfus(o[2])
     print(urlunparse(o))
+
+    tt = split_ip("127.0.0.1")
+    print(ip_dword(tt))
